@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="~/lib/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="~/lib/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="~/lib/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <script src="https://kit.fontawesome.com/a15138ce98.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AdminPanel.styles.css" asp-append-version="true" />
@@ -39,7 +40,7 @@
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="~/img/ASTUTE.png" alt="AstuteCourseLogo" height="250" width="250">
+            <h1 class="animation__shake">Admin Panel</h1>
         </div>
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-dark">
@@ -49,10 +50,10 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="/" class="nav-link">Home</a>
+                    <a href="/" class="nav-link text-light">Home</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a asp-area="Utility" asp-page="/Admin/Index" class="nav-link">Dashboard Home</a>
+                    <a asp-area="" asp-controller="Dashboard" asp-action="Index" class="nav-link text-light">Dashboard Home</a>
                 </li>
             </ul>
 
@@ -83,8 +84,8 @@
                 <!-- Messages Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link text-warning" data-toggle="dropdown" href="#">
-                        <i class="far fa-comments"></i>
-                        <span class="badge btn-new-primary text-new-color navbar-badge">3</span>
+                        <i class="fa-solid fa-comments"></i>
+                        <span class="badge btn-danger text-new-color navbar-badge">3</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 
@@ -94,7 +95,7 @@
                 <!-- Notifications Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link text-light" data-toggle="dropdown" href="#">
-                        <i class="far fa-bell"></i>
+                        <i class="fa-solid text-info fa-bell"></i>
                         <span class="badge btn-danger navbar-badge">15</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -120,19 +121,19 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light" data-widget="fullscreen" href="#" role="button">
-                        <i class="fas fa-expand-arrows-alt"></i>
+                        <i class="fa-solid fa-expand-arrows-alt"></i>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                        <i class="fas fa-th-large"></i>
+                        <i class="fa-solid fa-th-large"></i>
                     </a>
                 </li>
             </ul>
         </nav>
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar bg-dark  elevation-4">
+        <aside class="main-sidebar bg-dark elevation-4">
             <!-- Brand Logo -->
             <a asp-area="" asp-controller="Home" asp-action="Index" class="brand-link">
                 <span class="brand-text font-weight-light">Admin Panel</span>
@@ -142,16 +143,16 @@
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image ml-2">
-                        <i class="fas fa-user text-light img-circle elevation-2"></i>
+                    <div class="image mx-1">
+                        <i class="fa-solid fa-circle-user text-light"></i>
                     </div>
-                    <div class="info align-items-center">
+                    <div class="row align-items-start">
                         <a href="#" class="d-block text-light">
                             @{
                                 if (User != null){
                                     if (UserManager.GetUserAsync(User).Result?.FullName != null)
                                     {
-                                        var fullname = UserManager.GetUserAsync(User).Result?.FullName;
+                                        var fullname = UserManager.GetUserAsync(User).Result?.FirstName + " " + UserManager.GetUserAsync(User).Result?.LastName;
                                         <span>@fullname</span>
                                     }
                                 }
@@ -163,7 +164,7 @@
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
                     <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                        <input class="form-control shadow-none" type="search" placeholder="Search" aria-label="Search">
                         <div class="input-group-append bg-success rounded">
                             <button class="btn btn-sidebar">
                                 <i class="fas fa-search text-light fa-fw"></i>
@@ -181,75 +182,21 @@
                                 if (User.IsInRole("Admin"))
                                 {
                                     <li class="nav-item">
-                                        <a asp-area="Utility" asp-page="/Students/Detail" class="nav-link">
-                                            <i class="nav-icon fas fa-user"></i>
-                                            <p>
-                                                Students
+                                        <a asp-area="" asp-controller="User" asp-action="Index" class="nav-link text-light">
+                                            <i class="nav-icon fa-solid fa-users"></i>
+                                            <p class="">
+                                                Users
                                                 <span class="right badge badge-danger">New</span>
                                             </p>
                                         </a>
                                     </li>
+
                                     <li class="nav-item">
-                                        <a asp-area="Utility" asp-page="/Faculties/Detail" class="nav-link">
-                                            <i class="nav-icon fas fa-th"></i>
-                                            <p>
-                                                Faculty
-                                            </p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a asp-area="Utility" asp-page="/Courses/Detail" class="nav-link">
-                                            <i class="nav-icon fas fa-th"></i>
-                                            <p>
-                                                Course
-                                            </p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a asp-area="Utility" asp-page="/Modules/Detail" class="nav-link">
-                                            <i class="nav-icon fas fa-th"></i>
-                                            <p>
-                                                Module
-                                            </p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a asp-area="Utility" asp-page="/Units/Detail" class="nav-link">
-                                            <i class="nav-icon fas fa-th"></i>
-                                            <p>
-                                                Unit
-                                            </p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a asp-area="Utility" asp-page="/Notes/Detail" class="nav-link">
-                                            <i class="nav-icon fas fa-th"></i>
-                                            <p>
-                                                Note
-                                            </p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a asp-area="Payments" asp-page="/Courses/Detail" class="nav-link">
-                                            <i class="nav-icon fas fa-th"></i>
-                                            <p>
-                                                Transactions
-                                            </p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a asp-area="Utility" asp-page="/UserCourses/Detail" class="nav-link">
-                                            <i class="nav-icon fas fa-th"></i>
-                                            <p>
-                                                UserCourses
-                                            </p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a asp-area="Utility" asp-page="/PastQuestions/Detail" class="nav-link">
-                                            <i class="nav-icon fas fa-th"></i>
-                                            <p>
-                                                PastQuestions
+                                        <a asp-area="" asp-controller="Roles" asp-action="Index" class="nav-link text-light">
+                                            <i class="nav-icon fa-solid fa-layer-group"></i>
+                                            <p class="">
+                                                Roles
+                                                <span class="right badge badge-danger">New</span>
                                             </p>
                                         </a>
                                     </li>
@@ -312,6 +259,25 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/dashboard.js" asp-append-version="true"></script>
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": true, "autoWidth": true, "ordering": true, "searching": true,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

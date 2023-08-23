@@ -1,0 +1,95 @@
+﻿@model List<AdminPanel.Models.CreatedUser>;
+@using AdminPanel.Models;
+
+@{
+    ViewData["Title"] = "Users";
+    Layout = "_Dashboard";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Users DataTables</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">DataTables</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-md-2">
+                    <a asp-area="" asp-controller="User" asp-action="Create" class="btn btn-success shadow-none">Create</a>
+                </div>
+                <div class="col-md-10">
+                    <partial name="_StatusMessage" for='@TempData["StatusMessage"]' />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">DataTable with every user data</h3>
+                        </div>
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>First name</th>
+                                        <th>Last name</th>
+                                        <th>Date created</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (CreatedUser createdUser in Model.OrderByDescending(us => us.DateCreated))
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a asp-action="" asp-controller="User" asp-action="Index">
+                                                    @createdUser.Username
+                                                </a>
+                                            </td>
+                                            <td>@createdUser.FirstName</td>
+                                            <td>@createdUser.LastName</td>
+                                            <td>@createdUser.DateCreated.ToString("MMM dd yyyy")</td>
+                                            <td>
+                                                <a asp-action="" asp-controller="User" asp-action="Edit" asp-route-id="@createdUser.Id">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a asp-action="" asp-controller="User" asp-action="Delete" asp-route-id="@createdUser.Id">
+                                                    <i class="fas text-danger fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>First name</th>
+                                        <th>Last name</th>
+                                        <th>Date created</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

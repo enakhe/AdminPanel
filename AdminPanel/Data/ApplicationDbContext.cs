@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿#nullable disable
+
+using AdminPanel.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +9,7 @@ namespace AdminPanel.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        public DbSet<CreatedUser> CreatedUsers { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

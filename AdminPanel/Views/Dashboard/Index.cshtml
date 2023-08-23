@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Dashboard";
     Layout = "_Dashboard";
 }
 
@@ -25,28 +25,28 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-3 col-6">
-                    <div class="small-box bg-info">
+                    <div class="small-box bg-success">
                         <div class="inner">
                              <h3>0</h3>
-                            <p>Faculties</p>
+                            <p>Users</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-copy"></i>
                         </div>
-                        <a asp-area="Utility" asp-page="/Faculties/Detail" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a asp-area="Utility" asp-page="/Faculties/Detail" class="small-box-footer bg-dark text-light">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-new-primary">
                         <div class="inner">
-                            <h3>200</h3>
-                            <p>Transactions</p>
+                            <h3>0</h3>
+                            <p>Roles</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-money"></i>
                         </div>
-                        <a asp-area="Payments" asp-page="/Courses/Detail" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a asp-area="Payments" asp-page="/Courses/Detail" class="small-box-footer bg-dark text-light">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -57,12 +57,12 @@
                         <div class="card-header">
                             <h3 class="card-title">
                                 <i class="fas fa-chart-pie mr-1"></i>
-                                Sales
+                                User Charts
                             </h3>
                             <div class="card-tools">
                                 <ul class="nav nav-pills ml-auto">
                                     <li class="nav-item">
-                                        <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Area</a>
+                                        <a class="nav-link bg-dark active" href="#revenue-chart" data-toggle="tab">Area</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
