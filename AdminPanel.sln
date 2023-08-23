@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34009.444
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminPanel", "AdminPanel\AdminPanel.csproj", "{BC73E057-E067-4122-BD36-D4F4F01EB606}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BC73E057-E067-4122-BD36-D4F4F01EB606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC73E057-E067-4122-BD36-D4F4F01EB606}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC73E057-E067-4122-BD36-D4F4F01EB606}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC73E057-E067-4122-BD36-D4F4F01EB606}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D9552C74-7EE0-462A-B976-5A16998181A1}
+	EndGlobalSection
+EndGlobal
