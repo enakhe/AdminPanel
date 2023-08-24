@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Users";
     Layout = "_Dashboard";
+    var statusMessage = ViewData["StatusMessage"] as string;
 }
 
 <div class="content-wrapper">
@@ -29,7 +30,12 @@
                     <a asp-area="" asp-controller="User" asp-action="Create" class="btn btn-success shadow-none">Create</a>
                 </div>
                 <div class="col-md-10">
-                    <partial name="_StatusMessage" for='@TempData["StatusMessage"]' />
+                    @{
+                        if (!string.IsNullOrEmpty(@statusMessage))
+                        {
+                            <partial name="_StatusMessage" for=@statusMessage />
+                        }
+                    }
                 </div>
             </div>
             <div class="row">

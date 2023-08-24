@@ -53,3 +53,7 @@ body {
 .top {
     margin-top: 50px;
 }
+
+.h-87 {
+    height: 87vh !important;
+}

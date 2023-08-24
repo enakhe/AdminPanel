@@ -32,22 +32,31 @@ namespace AdminPanel.Controllers
         public string ReturnUrl { get; set; }
 
 
-
-        public async Task<IActionResult> Index(string returnUrl = null)
+        [HttpGet]
+        public async Task<IActionResult> Index(string statusMessage, string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+            ViewData["StatusMessage"] = statusMessage;
             var UserList = await _db.CreatedUsers.ToListAsync();
             return View(UserList);
         }
 
-        public async Task<IActionResult> Create(UserInputModel userInputModel, string returnUrl = null)
+        [HttpGet]
+        public  IActionResult Create(string returnUrl = null)
+        {
+            ReturnUrl = returnUrl;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(UserViewModel userInputModel, string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             if (ModelState.IsValid)
             {
                 if (userInputModel.Username == null || userInputModel.FirstName == null || userInputModel.LastName == null || userInputModel.Password == null)
                 {
-                    TempData["StatusMessage"] = "Error, add required fields";
+                    ViewData["ErrorMessage"] = "Error, add required fields";
                     return View();
                 }
                 CreatedUser newUser = new()
@@ -64,8 +73,11 @@ namespace AdminPanel.Controllers
                 {
                     await _db.SaveChangesAsync();
                     _logger.LogInformation("Successfully Added User");
-                    TempData["StatusMessage"] = "Successfully added user";
-                    return RedirectToAction("Index");
+                    ViewData["StatusMessage"] = "Successfully added user";
+                    return RedirectToAction("Index", new
+                    {
+                        statusMessage = ViewData["StatusMessage"]
+                    });
                 }
             }
             return View();
