@@ -46,23 +46,28 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form id="createForm" enctype="multipart/form-data" method="post">
+                            <form id="createForm needs-validation" novalidate enctype="multipart/form-data" method="post">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                <div class="form-group">
+                                <div class="form-group has-validation">
                                     <label for="courseTitle">Username</label>
-                                    <input type="text" placeholder="Username" asp-for="@Model.Username" autocomplete="title" aria-required="true" class="form-control shadow-none">
+                                    <input type="text" placeholder="Username" asp-for="@Model.Username" aria-required="true" class="form-control shadow-none">
                                 </div>
                                 <div class="form-group">
                                     <label for="courseCode">First name</label>
-                                    <input type="text" placeholder="First name" asp-for="@Model.FirstName" autocomplete="code" aria-required="true" class="form-control shadow-none">
+                                    <input type="text" placeholder="First name" asp-for="@Model.FirstName" aria-required="true" class="form-control shadow-none">
                                 </div>
                                 <div class="form-group">
                                     <label for="courseDuration">Last name</label>
-                                    <input type="text" placeholder="Last name" asp-for="@Model.LastName" autocomplete="duration" aria-required="true" class="form-control shadow-none">
+                                    <input type="text" placeholder="Last name" asp-for="@Model.LastName" aria-required="true" class="form-control shadow-none">
                                 </div>
                                 <div class="form-group">
                                     <label for="courseAmount">Password</label>
-                                    <input type="text" placeholder="Password" asp-for="@Model.Password" autocomplete="amount" aria-required="true" class="form-control shadow-none">
+                                    <input type="text" placeholder="Password" asp-for="@Model.Password" aria-required="true" class="form-control shadow-none">
+                                    <div id="password-message" class="py-2">
+                                        <p id="char"><i id="charIcon" class=""></i> Password must be more than 6 characters</p>
+                                        <p id="num"><i id="numIcon" class=""></i> Password must be include number</p>
+                                        <p id="alp"><i id="alpIcon" class=""></i> Password must be include special characters</p>
+                                    </div>
                                 </div>
                                 <button type="submit" class="w-100 btn btn-lg btn-success">Save</button>
                             </form>

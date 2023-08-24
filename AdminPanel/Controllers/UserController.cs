@@ -42,7 +42,7 @@ namespace AdminPanel.Controllers
         }
 
         [HttpGet]
-        public  IActionResult Create(string returnUrl = null)
+        public IActionResult Create(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             return View();
@@ -59,11 +59,26 @@ namespace AdminPanel.Controllers
                     ViewData["ErrorMessage"] = "Error, add required fields";
                     return View();
                 }
+
+                var existedUser = CheckUsername(userInputModel.Username);
+                if (existedUser)
+                {
+                    ViewData["ErrorMessage"] = "Error, a user with that username already exits";
+                    return View();
+                }
+
+                var passwordValidation = PasswordValidator(userInputModel.Password);
+                if (passwordValidation == false)
+                {
+                    ViewData["ErrorMessage"] = "Error, invalid password";
+                    return View();
+                }
+
                 CreatedUser newUser = new()
                 {
                     Username = userInputModel.Username,
                     FirstName = Regex.Replace(userInputModel.FirstName, "^[a-z]", c => c.Value.ToUpper()),
-                    LastName  = Regex.Replace(userInputModel.LastName, "^[a-z]", c => c.Value.ToUpper()),
+                    LastName = Regex.Replace(userInputModel.LastName, "^[a-z]", c => c.Value.ToUpper()),
                     Password = userInputModel.Password
                 };
 
@@ -81,6 +96,58 @@ namespace AdminPanel.Controllers
                 }
             }
             return View();
+        }
+
+        private bool CheckUsername(string username)
+        {
+            var user = _db.CreatedUsers.FirstOrDefault(user => user.Username == username);
+            if (user != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool PasswordValidator(string password)
+        {
+            var regexItem = new Regex("^[`!@#$%&*]*$");
+            var regexItemNum = new Regex("^[0-9]*$");
+
+            bool isValid = false;
+
+            if (password.Length >= 6)
+            {
+                isValid = true;
+            } else
+            {
+                isValid = false;
+            }
+
+            foreach (char c in password)
+            {
+                if (regexItem.IsMatch(c.ToString()))
+                {
+                    isValid =  true;
+                }
+                else
+                {
+                    isValid = false;
+                }
+            }
+
+            foreach (char c in password)
+            {
+                if (regexItemNum.IsMatch(c.ToString()))
+                {
+                    isValid = true;
+                }
+                else
+                {
+                    isValid = false;
+                }
+            }
+
+            return isValid;
         }
     }
 }
