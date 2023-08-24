@@ -194,6 +194,30 @@ namespace AdminPanel.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CreatedUsers",
+                schema: "AdminPanel",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AdminId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CreatedUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CreatedUsers_User_AdminId",
+                        column: x => x.AdminId,
+                        principalSchema: "AdminPanel",
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 schema: "AdminPanel",
@@ -207,6 +231,12 @@ namespace AdminPanel.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CreatedUsers_AdminId",
+                schema: "AdminPanel",
+                table: "CreatedUsers",
+                column: "AdminId");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
@@ -245,11 +275,11 @@ namespace AdminPanel.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RoleClaims",
+                name: "CreatedUsers",
                 schema: "AdminPanel");
 
             migrationBuilder.DropTable(
-                name: "User",
+                name: "RoleClaims",
                 schema: "AdminPanel");
 
             migrationBuilder.DropTable(
@@ -266,6 +296,10 @@ namespace AdminPanel.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserTokens",
+                schema: "AdminPanel");
+
+            migrationBuilder.DropTable(
+                name: "User",
                 schema: "AdminPanel");
 
             migrationBuilder.DropTable(

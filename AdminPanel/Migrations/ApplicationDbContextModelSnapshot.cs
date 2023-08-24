@@ -28,6 +28,9 @@ namespace AdminPanel.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("AdminId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
@@ -44,6 +47,8 @@ namespace AdminPanel.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
 
                     b.ToTable("CreatedUsers", "AdminPanel");
                 });
@@ -264,6 +269,15 @@ namespace AdminPanel.Migrations
                     b.ToTable("User", "AdminPanel");
                 });
 
+            modelBuilder.Entity("AdminPanel.Models.CreatedUser", b =>
+                {
+                    b.HasOne("AdminPanel.Data.ApplicationUser", "Admin")
+                        .WithMany("CreatedUsers")
+                        .HasForeignKey("AdminId");
+
+                    b.Navigation("Admin");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -322,6 +336,11 @@ namespace AdminPanel.Migrations
                         .HasForeignKey("AdminPanel.Data.ApplicationUser", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AdminPanel.Data.ApplicationUser", b =>
+                {
+                    b.Navigation("CreatedUsers");
                 });
 #pragma warning restore 612, 618
         }

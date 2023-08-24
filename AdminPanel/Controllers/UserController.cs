@@ -36,8 +36,9 @@ namespace AdminPanel.Controllers
         public async Task<IActionResult> Index(string statusMessage, string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+            var user = await _userManager.GetUserAsync(User);
             ViewData["StatusMessage"] = statusMessage;
-            var UserList = await _db.CreatedUsers.ToListAsync();
+            var UserList = await _db.CreatedUsers.Where(createdUser => createdUser.AdminId == user.Id).ToListAsync();
             return View(UserList);
         }
 
@@ -54,6 +55,8 @@ namespace AdminPanel.Controllers
             ReturnUrl = returnUrl;
             if (ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(User);
+
                 if (userInputModel.Username == null || userInputModel.FirstName == null || userInputModel.LastName == null || userInputModel.Password == null)
                 {
                     ViewData["ErrorMessage"] = "Error, add required fields";
@@ -79,7 +82,9 @@ namespace AdminPanel.Controllers
                     Username = userInputModel.Username,
                     FirstName = Regex.Replace(userInputModel.FirstName, "^[a-z]", c => c.Value.ToUpper()),
                     LastName = Regex.Replace(userInputModel.LastName, "^[a-z]", c => c.Value.ToUpper()),
-                    Password = userInputModel.Password
+                    Password = userInputModel.Password,
+
+                    AdminId = user.Id
                 };
 
                 ValueTask<EntityEntry<CreatedUser>> result = _db.CreatedUsers.AddAsync(newUser);
@@ -94,6 +99,64 @@ namespace AdminPanel.Controllers
                         statusMessage = ViewData["StatusMessage"]
                     });
                 }
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id, string returnUrl = null)
+        {
+            ReturnUrl = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var thisCreatedUser = await _db.CreatedUsers.FirstOrDefaultAsync(createdUser => createdUser.Id == id);
+                return View(thisCreatedUser);
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserViewModel userInputModel, string id, string returnUrl = null)
+        {
+            ReturnUrl = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                if (userInputModel.Username == null || userInputModel.FirstName == null || userInputModel.LastName == null || userInputModel.Password == null)
+                {
+                    ViewData["ErrorMessage"] = "Error, add required fields";
+                    return View();
+                }
+
+                if (userInputModel.Username.Length < 6)
+                {
+                    ViewData["ErrorMessage"] = "Error, username too short";
+                    return View();
+                }
+
+                var passwordValidation = PasswordValidator(userInputModel.Password);
+                if (passwordValidation == false)
+                {
+                    ViewData["ErrorMessage"] = "Error, invalid password";
+                    return View();
+                }
+
+                var thisCreatedUser = await _db.CreatedUsers.FirstOrDefaultAsync(createdUser => createdUser.Id == id);
+
+                thisCreatedUser.Username = userInputModel.Username;
+                thisCreatedUser.LastName = Regex.Replace(userInputModel.LastName, "^[a-z]", c => c.Value.ToUpper());
+                thisCreatedUser.FirstName = Regex.Replace(userInputModel.FirstName, "^[a-z]", c => c.Value.ToUpper());
+                thisCreatedUser.Password = userInputModel.Password;
+
+                _db.Entry(thisCreatedUser).State = EntityState.Modified;
+
+                await _db.SaveChangesAsync();
+                ViewData["StatusMessage"] = "Successfully updated user";
+                return RedirectToAction("Index", new
+                {
+                    statusMessage = ViewData["StatusMessage"]
+                });
             }
             return View();
         }

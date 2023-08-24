@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdminPanel.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230823150714_UserMigration")]
-    partial class UserMigration
+    [Migration("20230824145615_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,6 +29,9 @@ namespace AdminPanel.Migrations
             modelBuilder.Entity("AdminPanel.Models.CreatedUser", b =>
                 {
                     b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AdminId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DateCreated")
@@ -47,6 +50,8 @@ namespace AdminPanel.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
 
                     b.ToTable("CreatedUsers", "AdminPanel");
                 });
@@ -267,6 +272,15 @@ namespace AdminPanel.Migrations
                     b.ToTable("User", "AdminPanel");
                 });
 
+            modelBuilder.Entity("AdminPanel.Models.CreatedUser", b =>
+                {
+                    b.HasOne("AdminPanel.Data.ApplicationUser", "Admin")
+                        .WithMany("CreatedUsers")
+                        .HasForeignKey("AdminId");
+
+                    b.Navigation("Admin");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -325,6 +339,11 @@ namespace AdminPanel.Migrations
                         .HasForeignKey("AdminPanel.Data.ApplicationUser", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AdminPanel.Data.ApplicationUser", b =>
+                {
+                    b.Navigation("CreatedUsers");
                 });
 #pragma warning restore 612, 618
         }

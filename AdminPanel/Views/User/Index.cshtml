@@ -69,12 +69,12 @@
                                             <td>@createdUser.LastName</td>
                                             <td>@createdUser.DateCreated.ToString("MMM dd yyyy")</td>
                                             <td>
-                                                <a asp-action="" asp-controller="User" asp-action="Edit" asp-route-id="@createdUser.Id">
+                                                <a asp-area="" asp-controller="User" asp-action="Edit" asp-route-id="@createdUser.Id">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                             </td>
                                             <td>
-                                                <a asp-action="" asp-controller="User" asp-action="Delete" asp-route-id="@createdUser.Id">
+                                                <a asp-area="" asp-controller="User" asp-action="Delete" asp-route-id="@createdUser.Id">
                                                     <i class="fas text-danger fa-trash"></i>
                                                 </a>
                                             </td>

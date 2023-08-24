@@ -7,7 +7,18 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="dropdown nav-item">
-            <a class="nav-link text-light dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Hello @User.Identity?.Name!</a>
+            <a class="nav-link text-light dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                @{
+                    if (User != null)
+                    {
+                        if (UserManager.GetUserAsync(User).Result?.FullName != null)
+                        {
+                            var fullname = UserManager.GetUserAsync(User).Result?.FirstName + " " + UserManager.GetUserAsync(User).Result?.LastName;
+                            <span>@fullname</span>
+                        }
+                    }
+                }
+            </a>
             <ul class="dropdown-menu">
                 <li>
                     <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>

@@ -57,3 +57,8 @@ body {
 .h-87 {
     height: 87vh !important;
 }
+
+.buttons-html5,
+.buttons-print{
+    margin-right: 3px;
+}
