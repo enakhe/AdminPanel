@@ -63,7 +63,7 @@ namespace AdminPanel.Controllers
                 var existedUser = CheckUsername(userInputModel.Username);
                 if (existedUser)
                 {
-                    ViewData["ErrorMessage"] = "Error, a user with that username already exits";
+                    ViewData["ErrorMessage"] = "Error, a user with that username already exits or username too short";
                     return View();
                 }
 
@@ -100,6 +100,10 @@ namespace AdminPanel.Controllers
 
         private bool CheckUsername(string username)
         {
+            if (username.Length < 6)
+            {
+                return true;
+            }
             var user = _db.CreatedUsers.FirstOrDefault(user => user.Username == username);
             if (user != null)
             {
@@ -111,7 +115,7 @@ namespace AdminPanel.Controllers
         private bool PasswordValidator(string password)
         {
             var regexItem = new Regex("^[`!@#$%&*]*$");
-            var regexItemNum = new Regex("^[0-9]*$");
+            var regexItemNum = new Regex(@"^\d+$");
 
             bool isValid = false;
 
@@ -137,7 +141,7 @@ namespace AdminPanel.Controllers
 
             foreach (char c in password)
             {
-                if (regexItemNum.IsMatch(c.ToString()))
+                if (Regex.IsMatch(c.ToString(), @"^\d+$"))
                 {
                     isValid = true;
                 }
