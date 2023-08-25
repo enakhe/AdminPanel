@@ -29,7 +29,7 @@ namespace AdminPanel.ApiController
             {
                 if (username.Length < 6)
                 {
-                    return new JsonResult("Username is to short");
+                    return new JsonResult("Error, username is to short");
                 }
                 var user = await _db.CreatedUsers.FirstOrDefaultAsync(user => user.Username == username);
                 if (user != null)

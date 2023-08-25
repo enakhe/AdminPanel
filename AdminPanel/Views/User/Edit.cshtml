@@ -30,10 +30,12 @@
             @{
                 if (!string.IsNullOrEmpty(@errorMessage))
                 {
-                    <partial name="_StatusMessage" for=@errorMessage />
+                    <div class="my-3">
+                        <partial name="_StatusMessage" for=@errorMessage />
+                    </div>
                 }
             }
-            <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex justify-content-center my-3 align-items-center">
                 <div class="col-md-10">
                     <div class="card">
                         <div class="card-header bg-dark">

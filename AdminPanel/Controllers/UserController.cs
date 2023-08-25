@@ -144,15 +144,52 @@ namespace AdminPanel.Controllers
 
                 var thisCreatedUser = await _db.CreatedUsers.FirstOrDefaultAsync(createdUser => createdUser.Id == id);
 
-                thisCreatedUser.Username = userInputModel.Username;
-                thisCreatedUser.LastName = Regex.Replace(userInputModel.LastName, "^[a-z]", c => c.Value.ToUpper());
-                thisCreatedUser.FirstName = Regex.Replace(userInputModel.FirstName, "^[a-z]", c => c.Value.ToUpper());
-                thisCreatedUser.Password = userInputModel.Password;
+                if (thisCreatedUser != null)
+                {
+                    thisCreatedUser.Username = userInputModel.Username;
+                    thisCreatedUser.LastName = Regex.Replace(userInputModel.LastName, "^[a-z]", c => c.Value.ToUpper());
+                    thisCreatedUser.FirstName = Regex.Replace(userInputModel.FirstName, "^[a-z]", c => c.Value.ToUpper());
+                    thisCreatedUser.Password = userInputModel.Password;
 
-                _db.Entry(thisCreatedUser).State = EntityState.Modified;
+                    _db.Entry(thisCreatedUser).State = EntityState.Modified;
 
+                    await _db.SaveChangesAsync();
+                    ViewData["StatusMessage"] = "Successfully updated user";
+                    return RedirectToAction("Index", new
+                    {
+                        statusMessage = ViewData["StatusMessage"]
+                    });
+                }
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(string id, string returnUrl = null)
+        {
+            ReturnUrl = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var thisCreatedUser = await _db.CreatedUsers.FirstOrDefaultAsync(createdUser => createdUser.Id == id);
+                return View(thisCreatedUser);
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string id, string returnUrl = null)
+        {
+            ReturnUrl = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                var thisCreatedUser = await _db.CreatedUsers.FirstOrDefaultAsync(createdUser => createdUser.Id == id);
+
+                if (thisCreatedUser != null)
+                    _db.CreatedUsers?.Remove(thisCreatedUser);
                 await _db.SaveChangesAsync();
-                ViewData["StatusMessage"] = "Successfully updated user";
+                ViewData["StatusMessage"] = "Successfully deleted user";
                 return RedirectToAction("Index", new
                 {
                     statusMessage = ViewData["StatusMessage"]
@@ -178,43 +215,26 @@ namespace AdminPanel.Controllers
         private bool PasswordValidator(string password)
         {
             var regexItem = new Regex("^[`!@#$%&*]*$");
-            var regexItemNum = new Regex(@"^\d+$");
 
-            bool isValid = false;
+            bool returnStatement = false;
 
             if (password.Length >= 6)
             {
-                isValid = true;
-            } else
-            {
-                isValid = false;
-            }
+                foreach (char c in password)
+                {
+                    if (regexItem.IsMatch(c.ToString()))
+                    {
+                        returnStatement = true;
+                    }
 
-            foreach (char c in password)
-            {
-                if (regexItem.IsMatch(c.ToString()))
-                {
-                    isValid =  true;
-                }
-                else
-                {
-                    isValid = false;
+                    if (char.IsDigit(c))
+                    {
+                        returnStatement = true;
+                    }
                 }
             }
 
-            foreach (char c in password)
-            {
-                if (Regex.IsMatch(c.ToString(), @"^\d+$"))
-                {
-                    isValid = true;
-                }
-                else
-                {
-                    isValid = false;
-                }
-            }
-
-            return isValid;
+            return returnStatement;
         }
     }
 }
